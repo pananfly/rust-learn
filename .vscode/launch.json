@@ -1,0 +1,52 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug executable 'rust-learn'",
+            "env": {
+                "RUST_BACKTRACE" : "1",
+                "IGNORE_CASE": "1", // 测试读文件后查找test是否忽略大小写
+            },
+            "cargo": {
+                "args": [
+                    "build",
+                    "--bin=rust-learn",
+                    "--package=rust-learn"
+                ],
+                "filter": {
+                    "name": "rust-learn",
+                    "kind": "bin"
+                },
+            },
+            "args": [
+                "test",
+                "Cargo.toml"
+            ],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug unit tests in executable 'rust-learn'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--bin=rust-learn",
+                    "--package=rust-learn"
+                ],
+                "filter": {
+                    "name": "rust-learn",
+                    "kind": "bin"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        }
+    ]
+}
