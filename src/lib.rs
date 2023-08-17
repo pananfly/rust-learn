@@ -100,16 +100,39 @@ impl IOConfig {
         let ignore_case = std::env::var("IGNORE_CASE").is_ok();
         Ok(IOConfig {query, file_path, ignore_case})
     }
+
+    pub fn build2(mut args: impl Iterator<Item = String>,
+    ) -> Result<IOConfig, &'static str> {
+        // 忽略第一个参数
+        args.next();
+        // 获取第二个参数为query值
+        let query = match args.next() {
+            Some(arg) => arg,
+            None => return Err("Didn't get a query string"),
+        };
+        // 获取第三个参数为file path值
+        let file_path = match args.next() {
+            Some(arg) => arg,
+            None => return Err("Didn't get a file path"),
+        };
+        let ignore_case = std::env::var("IGNORE_CASE").is_ok();
+        Ok(IOConfig {query, file_path, ignore_case})
+    }
 }
 
 pub fn search<'a>(query: &str, content: &'a str) -> Vec<&'a str> {
-    let mut results = Vec::new();
-    for line in content.lines() {
-        if line.contains(query) {
-            results.push(line);
-        }
-    }
-    results
+    // let mut results = Vec::new();
+    // for line in content.lines() {
+    //     if line.contains(query) {
+    //         results.push(line);
+    //     }
+    // }
+    // results
+
+    // 使用迭代器优化
+    content.lines()
+    .filter(|line| line.contains(query))
+    .collect()
 }
 
 pub fn search_case_insensitive<'a>(query: &str, content: &'a str) -> Vec<&'a str> {
